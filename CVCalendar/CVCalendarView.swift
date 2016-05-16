@@ -39,6 +39,7 @@ public final class CVCalendarView: UIView {
     public var animator: Animator!
     public var contentController: ContentViewController!
     public var calendarMode: CalendarMode!
+    public var delegateCalendar : CVCalendarViewDelegate!
 
     public var (weekViewSize, dayViewSize): (CGSize?, CGSize?)
 
@@ -65,7 +66,7 @@ public final class CVCalendarView: UIView {
     public var presentedDate: Date! {
         didSet {
             if let _ = oldValue {
-                delegate?.presentedDateUpdated?(presentedDate)
+                delegateCalendar.presentedDateUpdated?(presentedDate)
             }
         }
     }
@@ -259,7 +260,7 @@ extension CVCalendarView {
     public func didSelectDayView(dayView: CVCalendarDayView) {
         if let controller = contentController {
             presentedDate = dayView.date
-            delegate?.didSelectDayView?(dayView, animationDidFinish: false)
+            delegateCalendar?.didSelectDayView?(dayView, animationDidFinish: false)
             controller.performedDayViewSelection(dayView) // TODO: Update to range selection
         }
     }
